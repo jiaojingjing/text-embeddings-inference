@@ -180,16 +180,19 @@ impl CandleBackend {
 
         // Get candle device
         let device = if candle::utils::cuda_is_available() {
-            tracing::info!("Using CUDA");
+            tracing::info!("CUDA is available. Trying to initialize CUDA device...");
             println!(
                 "DEBUG: runtime_cap = {:?}, compile_cap = {:?}",
                 get_runtime_compute_cap(),
                 get_compile_compute_cap()
             );
+
             #[cfg(feature = "cuda")]
             match compatible_compute_cap() {
-                // Ok(true) => Device::new_cuda(0),
-                _ => Device::new_cuda(0),
+                Ok(true) => {
+                    tracing::info!("CUDA compute capability is compatible, using CUDA device.");
+                    Device::new_cuda(0)
+                }
                 Ok(false) => {
                     return Err(BackendError::Start(format!(
                         "Runtime compute cap {} is not compatible with compile time compute cap {}",
