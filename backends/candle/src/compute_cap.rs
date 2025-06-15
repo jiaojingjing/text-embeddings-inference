@@ -25,6 +25,7 @@ pub fn get_runtime_compute_cap() -> Result<usize, anyhow::Error> {
 
 fn compute_cap_matching(runtime_compute_cap: usize, compile_compute_cap: usize) -> bool {
     match (runtime_compute_cap, compile_compute_cap) {
+        (61, 61) => true,
         (75, 75) => true,
         (80..=89, 80) => true,
         (86..=89, 80..=86) => true,
@@ -49,6 +50,7 @@ mod tests {
 
     #[test]
     fn test_compute_cap() {
+        assert!(compute_cap_matching(61, 61));
         assert!(compute_cap_matching(75, 75));
         assert!(compute_cap_matching(80, 80));
         assert!(compute_cap_matching(86, 86));
