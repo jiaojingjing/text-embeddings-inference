@@ -181,7 +181,7 @@ impl CandleBackend {
         // Get candle device
         let device = if candle::utils::cuda_is_available() {
             tracing::info!("CUDA is available. Trying to initialize CUDA device...");
-            println!(
+            tracing::info!(
                 "DEBUG: runtime_cap = {:?}, compile_cap = {:?}",
                 get_runtime_compute_cap(),
                 get_compile_compute_cap()
